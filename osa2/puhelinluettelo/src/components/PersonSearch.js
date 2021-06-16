@@ -6,7 +6,7 @@ const PersonSearch = ({ searchName,handleInputChange }) => {
     <>
       <h2>Phonebook</h2>
       <div>
-        search: <input name="search" value={searchName} onChange={handleInputChange} />
+        Search: <input name="search" value={searchName} onChange={handleInputChange} />
       </div>
     </>
   )

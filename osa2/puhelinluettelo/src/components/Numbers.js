@@ -1,17 +1,32 @@
 import React from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
+// Data service
+import peopleService from '../services/people';
 
 
-const Numbers = ({ persons,search }) => {
-  
-  const renderPersons = () => {
-    return persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
-                  .map(person => 
-      <tr key={uuidv4()}>
-        <td>{person.name}</td>
-        <td>{person.number}</td>
-      </tr>
+const Numbers = ({ people,search,setPeople }) => {
+
+  const renderPeople = () => {
+      return people.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
+      .map(person => 
+        <tr key={person.id}>
+          <td>{person.name}</td>
+          <td>{person.number}</td>
+          <td><button onClick={() => deletePerson(person)}>Delete</button></td>
+        </tr>
       )
+  }
+
+  const deletePerson = (deletedPerson) => {
+    if (window.confirm(`Delete ${deletedPerson.name}?`)) {
+      peopleService
+        .destroy(deletedPerson.id)
+        .then(res => {
+          if (res === 200) {
+            setPeople(people.filter(person => person.id !== deletedPerson.id))
+          }
+        })
+    }
   }
 
   return (
@@ -25,7 +40,7 @@ const Numbers = ({ persons,search }) => {
           </tr>
         </thead>
         <tbody>
-          {renderPersons()}
+          {renderPeople()}
         </tbody>
       </table>
     </>

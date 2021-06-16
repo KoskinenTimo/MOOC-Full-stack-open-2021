@@ -7,13 +7,13 @@ const AddNewForm = ({ newName,newNumber,handleInputChange,handleAddPerson }) => 
       <h2>Add new</h2>
       <form>
         <div>
-          name: <input name="name" value={newName} onChange={handleInputChange} />          
+          Name: <input name="name" value={newName} onChange={handleInputChange} />          
         </div>
         <div>
-          number: <input name="number" value={newNumber} onChange={handleInputChange} />
+          Number: <input name="number" value={newNumber} onChange={handleInputChange} />
         </div>
         <div>
-          <button type="submit" onClick={handleAddPerson}>add</button>
+          <button type="submit" onClick={handleAddPerson}>Add</button>
         </div>
       </form> 
     </>
