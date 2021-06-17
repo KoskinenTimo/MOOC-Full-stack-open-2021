@@ -7,6 +7,7 @@ import peopleService from './services/people';
 import Numbers from './components/Numbers';
 import AddNewForm from './components/AddNewForm';
 import PersonSearch from './components/PersonSearch';
+import InfoBanner from './components/InfoBanner';
 
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchName, setSearchName ] = useState('');
+  const [ actionCompleted, setActionCompleted ] = useState(null);
 
   useEffect(() => {
     peopleService
@@ -23,39 +25,6 @@ const App = () => {
       })
   }, [])
   
-  const handleAddPerson = (e) => {
-    e.preventDefault();
-    const personExist = people.filter(person => person.name === newName)[0];
-    const newPerson = {
-      name: newName,
-      number: newNumber
-    }
-
-    if (personExist) {
-      if (window.confirm(`${personExist.name} already exists. Do you want to replace the old number?`)) {
-        peopleService
-        .update(personExist.id,newPerson)
-        .then(res => {
-          if (res) {
-            setPeople(people.map(person => person.id !== res.id ? person : res))
-            setNewName('');
-            setNewNumber('');
-          }
-        })
-      }    
-    } else {        
-      peopleService
-        .create(newPerson)
-        .then(person => {
-          if(person) {
-            setPeople(people.concat(person))
-            setNewName('');
-            setNewNumber('');
-          }
-        })
-    }
-  }
-
   const handleInputChange = ({ target }) => {
     if(target.name === "name") {
       setNewName(target.value)
@@ -68,20 +37,28 @@ const App = () => {
 
   return (
     <div>
+      <InfoBanner 
+        actionCompleted={actionCompleted}
+      />
       <PersonSearch 
         searchName={searchName}
         handleInputChange={handleInputChange}
       />
       <AddNewForm 
         newName={newName}
+        people={people}
         handleInputChange={handleInputChange}
         newNumber={newNumber}
-        handleAddPerson={handleAddPerson}
+        setPeople={setPeople}
+        setNewNumber={setNewNumber}
+        setNewName={setNewName}
+        setActionCompleted={setActionCompleted}
       />     
       <Numbers 
         people={people} 
         search={searchName}
-        setPeople={setPeople}           
+        setPeople={setPeople}   
+        setActionCompleted={setActionCompleted}        
       />
     </div>
   )

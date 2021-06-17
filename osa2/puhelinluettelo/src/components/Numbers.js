@@ -4,7 +4,7 @@ import React from 'react';
 import peopleService from '../services/people';
 
 
-const Numbers = ({ people,search,setPeople }) => {
+const Numbers = ({ people,search,setPeople,setActionCompleted }) => {
 
   const renderPeople = () => {
       return people.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
@@ -24,6 +24,18 @@ const Numbers = ({ people,search,setPeople }) => {
         .then(res => {
           if (res === 200) {
             setPeople(people.filter(person => person.id !== deletedPerson.id))
+            setActionCompleted({
+              message:`${deletedPerson.name} deleted.`,
+              type:"valid"
+            })
+            setTimeout(() => {
+              setActionCompleted(null);
+            },4000)
+          } else if (res === 404) {
+            setActionCompleted({
+              message:`${deletedPerson.name} has been deleted already.`,
+              type:"error"
+            })
           }
         })
     }
