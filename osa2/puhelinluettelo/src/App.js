@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 
 // Data service
-import peopleService from './services/people';
+import personsService from './services/persons';
 
 // Components
 import Numbers from './components/Numbers';
@@ -11,17 +11,17 @@ import InfoBanner from './components/InfoBanner';
 
 
 const App = () => {
-  const [ people, setPeople] = useState([]) 
+  const [ persons, setpersons] = useState([]) 
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchName, setSearchName ] = useState('');
   const [ actionCompleted, setActionCompleted ] = useState(null);
 
   useEffect(() => {
-    peopleService
+    personsService
       .getAll()
       .then(res => {
-        setPeople(res)
+        setpersons(res)
       })
   }, [])
   
@@ -46,19 +46,21 @@ const App = () => {
       />
       <AddNewForm 
         newName={newName}
-        people={people}
+        persons={persons}
         handleInputChange={handleInputChange}
         newNumber={newNumber}
-        setPeople={setPeople}
+        setpersons={setpersons}
         setNewNumber={setNewNumber}
         setNewName={setNewName}
         setActionCompleted={setActionCompleted}
+        actionCompleted={actionCompleted}    
       />     
       <Numbers 
-        people={people} 
+        persons={persons} 
         search={searchName}
-        setPeople={setPeople}   
-        setActionCompleted={setActionCompleted}        
+        setpersons={setpersons}   
+        setActionCompleted={setActionCompleted} 
+        actionCompleted={actionCompleted}       
       />
     </div>
   )

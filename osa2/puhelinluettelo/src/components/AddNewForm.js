@@ -1,14 +1,14 @@
 import React from 'react';
 
 // Data service
-import peopleService from '../services/people';
+import personsService from '../services/persons';
 
 
-const AddNewForm = ({ newName,newNumber,handleInputChange,people,setPeople,setNewName,setNewNumber,setActionCompleted }) => {
+const AddNewForm = ({ newName,newNumber,handleInputChange,persons,setpersons,setNewName,setNewNumber,setActionCompleted }) => {
 
   const handleAddPerson = (e) => {
     e.preventDefault();
-    const oldPerson = people.filter(person => person.name === newName)[0];
+    const oldPerson = persons.filter(person => person.name === newName)[0];
     const newPerson = {
       name: newName,
       number: newNumber
@@ -24,11 +24,11 @@ const AddNewForm = ({ newName,newNumber,handleInputChange,people,setPeople,setNe
   }
 
   const handleUpdate = (oldPerson,newPerson) => {
-    peopleService
+    personsService
     .update(oldPerson.id,newPerson)
     .then(res => {
       if (res) {
-        setPeople(people.map(person => person.id !== res.id ? person : res))
+        setpersons(persons.map(person => person.id !== res.id ? person : res))
         setNewName('');
         setNewNumber('');            
         setActionCompleted({
@@ -40,14 +40,23 @@ const AddNewForm = ({ newName,newNumber,handleInputChange,people,setPeople,setNe
         },4000)
       }
     })
+    .catch(err => {      
+      setActionCompleted({
+        message:err.response.data.message,
+        type:'error'
+      });
+      setTimeout(() => {
+        setActionCompleted(null);
+      },4000)
+    });
   }
 
   const handleCreate = (newPerson) => {
-    peopleService
+    personsService
     .create(newPerson)
     .then(person => {
       if(person) {
-        setPeople(people.concat(person))
+        setpersons(persons.concat(person))
         setNewName('');
         setNewNumber('');
         setActionCompleted({
@@ -59,6 +68,15 @@ const AddNewForm = ({ newName,newNumber,handleInputChange,people,setPeople,setNe
         },4000)
       }
     })
+    .catch(err => {      
+      setActionCompleted({
+        message:err.response.data.message,
+        type:'error'
+      });
+      setTimeout(() => {
+        setActionCompleted(null);
+      },4000)
+    });
   }
 
   return (

@@ -1,13 +1,13 @@
 import React from 'react';
 
 // Data service
-import peopleService from '../services/people';
+import personsService from '../services/persons';
 
 
-const Numbers = ({ people,search,setPeople,setActionCompleted }) => {
+const Numbers = ({ persons,search,setpersons,setActionCompleted,actionCompleted }) => {
 
-  const renderPeople = () => {
-      return people.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
+  const renderpersons = () => {
+      return persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))
       .map(person => 
         <tr key={person.id}>
           <td>{person.name}</td>
@@ -19,11 +19,11 @@ const Numbers = ({ people,search,setPeople,setActionCompleted }) => {
 
   const deletePerson = (deletedPerson) => {
     if (window.confirm(`Delete ${deletedPerson.name}?`)) {
-      peopleService
+      personsService
         .destroy(deletedPerson.id)
         .then(res => {
-          if (res === 200) {
-            setPeople(people.filter(person => person.id !== deletedPerson.id))
+          if (res === 204) {
+            setpersons(persons.filter(person => person.id !== deletedPerson.id))
             setActionCompleted({
               message:`${deletedPerson.name} deleted.`,
               type:"valid"
@@ -36,6 +36,9 @@ const Numbers = ({ people,search,setPeople,setActionCompleted }) => {
               message:`${deletedPerson.name} has been deleted already.`,
               type:"error"
             })
+            setTimeout(() => {
+              setActionCompleted(null);
+            },4000)
           }
         })
     }
@@ -52,7 +55,7 @@ const Numbers = ({ people,search,setPeople,setActionCompleted }) => {
           </tr>
         </thead>
         <tbody>
-          {renderPeople()}
+          {renderpersons()}
         </tbody>
       </table>
     </>
