@@ -1,15 +1,27 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const Blog = require('../models/blog');
-const { blogs,getBlogsInDb } = require('./blogTestHelper');
+const { blogs,getBlogsInDb } = require('./testHelperForBlogs');
 const app = require('../app');
 const api = supertest(app);
+let userCredentials;
 
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  await Blog.insertMany(blogs);
+  await Blog.insertMany(blogs);  
 });
+
+beforeAll(async () => {
+  const loginDetails = {
+    "username": "tuomasveturi",
+    "password": "password3"
+  }
+  const res = await api
+    .post('/api/login')
+    .send(loginDetails)
+  userCredentials = res.body;
+})
 
 describe('test HTTP GET /api/blogs', () => {
   test('returned as json', async () => {
@@ -31,6 +43,19 @@ describe('test HTTP GET /api/blogs', () => {
 });
 
 describe('test HTTP POST /api/blogs', () => {
+  test('no auth token error', async () => {
+    const blog = {
+      "title": "Code battle",
+      "author": "Robert C. Martin",
+      "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+      "likes": 6
+    }
+    await api
+      .post('/api/blogs')
+      .send(blog)
+      .expect(401)
+  });
+
   test('post new note to db', async () => {
     const blog = {
       "title": "Code battle",
@@ -38,7 +63,10 @@ describe('test HTTP POST /api/blogs', () => {
       "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
       "likes": 6
     }
-    const responseBlog = await api.post('/api/blogs').send(blog);
+    const responseBlog = await api
+      .post('/api/blogs')
+      .set('Authorization', 'Bearer ' + userCredentials.token)
+      .send(blog);
     expect(responseBlog.body.title).toBe("Code battle");
     const responseBlogList = await api.get('/api/blogs');
     expect(responseBlogList.body).toHaveLength(blogs.length + 1);
@@ -50,7 +78,10 @@ describe('test HTTP POST /api/blogs', () => {
       "author": "Robert C. Martin",
       "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html"
     }
-    const responseBlog = await api.post('/api/blogs').send(blog);
+    const responseBlog = await api
+      .post('/api/blogs')
+      .set('Authorization', 'Bearer ' + userCredentials.token)
+      .send(blog);
     expect(responseBlog.body.likes).toBe(0);
   });
 
@@ -61,6 +92,7 @@ describe('test HTTP POST /api/blogs', () => {
     }
     await api
       .post('/api/blogs')
+      .set('Authorization', 'Bearer ' + userCredentials.token)
       .send(blogWithoutUrl)
       .expect(400);
 
@@ -70,6 +102,7 @@ describe('test HTTP POST /api/blogs', () => {
     }
     await api
     .post('/api/blogs')
+    .set('Authorization', 'Bearer ' + userCredentials.token)
     .send(blogWithoutTitle)
     .expect(400);
   });
@@ -78,9 +111,10 @@ describe('test HTTP POST /api/blogs', () => {
 describe('test HTTP DELETE /api/blogs/:id', () => {
   test('api returns correct status after deleting and checking if it exists in db', async () => {
     const blogsInDb = await getBlogsInDb();
-    const blogIdToRemove = blogsInDb[0].id;
+    const blogIdToRemove = blogsInDb[5].id;
     await api
       .delete(`/api/blogs/${blogIdToRemove}`)
+      .set('Authorization', 'Bearer ' + userCredentials.token)
       .expect(204);
     await api
       .get(`/api/blogs/${blogIdToRemove}`)

@@ -1,19 +1,15 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
-const { asyncHandler } = require('../utils/middleware');
-
-const createError = (statusCode=500,message="Something went wrong.") => {
-  const err = new Error();
-  err.status = statusCode;
-  err.message = message;
-  return err;
-}
+const { asyncHandler, userExtractor } = require('../utils/middleware');
+const { createError } = require('../utils/createError');
 
 /**
  * GET all blogs from db
  */
 blogsRouter.get('/', asyncHandler(async (req,res,next) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog
+    .find({})
+    .populate('user', { username: 1, name: 1 });
   if (blogs) {
     res.json(blogs);
   } else {
@@ -24,8 +20,9 @@ blogsRouter.get('/', asyncHandler(async (req,res,next) => {
 /**
  * POST one blog to db
  */
-blogsRouter.post('/', asyncHandler(async (req,res,next) => {
-  const blog = new Blog(req.body)
+blogsRouter.post('/', userExtractor, asyncHandler(async (req,res,next) => {
+  const { body, currentUser} = req;  
+  const blog = new Blog({ ...body, user: currentUser.id });  
   const postedBlog = await blog.save();
   if (postedBlog) {
     res.status(201).json(postedBlog);
@@ -50,13 +47,20 @@ blogsRouter.get('/:id', asyncHandler(async (req,res,next) => {
 /**
  * DELETE one blog from db
  */
-blogsRouter.delete('/:id', asyncHandler(async (req,res,next) => {
+blogsRouter.delete('/:id', userExtractor, asyncHandler(async (req,res,next) => {
   const id = req.params.id;
-  const response = await Blog.findByIdAndRemove(id);
-  if (response) {
-    res.status(204).end();
+  const { currentUser } = req;
+  const blog = await Blog.findById(id);
+
+  if (blog.user.toString() == currentUser.id) {
+    const response = await Blog.findByIdAndRemove(id);
+    if (response) {
+      res.status(204).end();
+    } else {
+      next(createError(404,`Blog with id ${id} not found.`));
+    }
   } else {
-    next(createError(404,`Blog with id ${id} not found.`));
+    next(401,"Not the blog owner, access denied");
   }
 }));
 
