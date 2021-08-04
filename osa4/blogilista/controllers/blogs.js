@@ -60,7 +60,7 @@ blogsRouter.delete('/:id', userExtractor, asyncHandler(async (req,res,next) => {
       next(createError(404,`Blog with id ${id} not found.`));
     }
   } else {
-    next(401,"Not the blog owner, access denied");
+    next(createError(401,"Not the blog owner, access denied"));
   }
 }));
 
