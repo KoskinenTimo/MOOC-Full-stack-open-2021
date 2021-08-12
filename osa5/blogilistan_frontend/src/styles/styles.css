@@ -1,0 +1,9 @@
+.error {
+  border: 2px solid red;
+  color: red;
+}
+
+.response {
+  border: 2px solid green;
+  color: green;
+}
