@@ -1,8 +1,7 @@
-/* eslint-disable import/no-anonymous-default-export */
 import React from 'react'
 
 /**
- * A header component 
+ * A header component
  */
 const Header = () => {
   return (

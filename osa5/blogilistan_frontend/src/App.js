@@ -3,21 +3,22 @@ import blogService from './services/blogs'
 
 // Components
 import Header from './components/Header'
-import Blog from './components/Blog'
-import FormLogin from './components/FormLogin'
+import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import FormBlog from './components/FormBlog'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+import BlogList from './components/BlogList'
 
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState(JSON.parse(window.localStorage.getItem('loggedBlogListUser')) || null);
+  const [user, setUser] = useState(JSON.parse(window.localStorage.getItem('loggedBlogListUser')) || null)
   const [notifications, setNotification] = useState(null)
 
   useEffect(() => {
-    blogService.getAll().then(blogs => 
-      setBlogs( blogs )  
-    )  
+    blogService.getAll().then(blogs =>
+      setBlogs( blogs )
+    )
   }, [])
 
   return (
@@ -27,19 +28,29 @@ const App = () => {
         notifications={notifications}
         setNotification={setNotification}
       />
-      <FormLogin 
-        user={user}  
-        setUser={setUser}
-        setNotification={setNotification}   
-      />
-      <FormBlog 
+      <Togglable
+        label={'Log In'}
+        visible={user ? true : false}
+      >
+        <LoginForm
+          user={user}
+          setUser={setUser}
+          setNotification={setNotification}
+        />
+      </Togglable>
+      <Togglable label={'Create A Blog'}>
+        <BlogForm
+          user={user}
+          setNotification={setNotification}
+          setBlogs={setBlogs}
+        />
+      </Togglable>
+      <BlogList
+        blogs={blogs}
         user={user}
-        setNotification={setNotification}
         setBlogs={setBlogs}
+        setNotification={setNotification}
       />
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
     </div>
   )
 }

@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
 
 
-const Notification = ({ notifications, setNotification }) => {
+const Notification = ({
+  notifications,
+  setNotification
+}) => {
 
   const resetNotifications = () => {
     const timer = setTimeout(() => {
@@ -9,23 +13,23 @@ const Notification = ({ notifications, setNotification }) => {
     }, 5000)
     return timer
   }
-  
+
   useEffect(() => {
     const timer = resetNotifications()
-    return () => clearTimeout(timer);
-  });
-  
+    return () => clearTimeout(timer)
+  })
+
   if (notifications &&  notifications.errors) {
     return (
       <div>
-        {notifications.errors.map((error,index) => 
+        {notifications.errors.map((error,index) =>
           <h3 key={index} className="error">{error}</h3>)}
       </div>
     )
   } else if (notifications && notifications.responses){
     return (
       <div>
-        {notifications.responses.map((response,index) => 
+        {notifications.responses.map((response,index) =>
           <h3 key={index} className="response">{response}</h3>)}
       </div>
     )
@@ -33,6 +37,11 @@ const Notification = ({ notifications, setNotification }) => {
     return null
   }
 
+}
+
+Notification.propTypes = {
+  notifications: PropTypes.object,
+  setNotification: PropTypes.func.isRequired
 }
 
 export default Notification

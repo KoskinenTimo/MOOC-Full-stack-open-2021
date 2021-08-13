@@ -11,7 +11,7 @@ blogsRouter.get('/', asyncHandler(async (req,res,next) => {
     .find({})
     .populate('user', { username: 1, name: 1 });
   if (blogs) {
-    res.json(blogs);
+    res.status(200).json(blogs);
   } else {
     next(createError());
   }
