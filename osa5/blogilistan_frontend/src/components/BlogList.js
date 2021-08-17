@@ -1,7 +1,7 @@
 import React from 'react'
 import Blog from './Blog'
-import Togglable from './Togglable'
 import PropTypes from 'prop-types'
+import blogService from '../services/blogs'
 
 
 const BlogList = ({
@@ -10,20 +10,29 @@ const BlogList = ({
   setBlogs,
   setNotification
 }) => {
+
+  const handleLikeButton = async(blog) => {
+    const updatedLikes = {
+      likes: blog.likes + 1
+    }
+    await blogService.update(blog.id, updatedLikes)
+    const blogs = await blogService.getAll()
+    setBlogs(blogs)
+  }
+
   return (
     <div>
       {blogs
         .sort((a,b) => b.likes - a.likes)
         .map(blog =>
           <div className='blogbox' key={blog.id}>
-            <Togglable text={`${blog.title} ${blog.author} `} label={'View'}>
-              <Blog
-                blog={blog}
-                user={user}
-                setBlogs={setBlogs}
-                setNotification={setNotification}
-              />
-            </Togglable>
+            <Blog
+              blog={blog}
+              user={user}
+              setBlogs={setBlogs}
+              setNotification={setNotification}
+              handleLikeButton={handleLikeButton}
+            />
           </div>
         )}
     </div>

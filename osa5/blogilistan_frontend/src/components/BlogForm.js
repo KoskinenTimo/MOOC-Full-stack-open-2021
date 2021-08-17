@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
 
 const BlogForm = ({
   user,
-  setNotification,
-  setBlogs,
+  createBlog,
   toggleVisibility
 }) => {
 
@@ -33,17 +31,12 @@ const BlogForm = ({
       author: author,
       url: url
     }
-    const res = await blogService.create(newBlog, user.token)
-    if (res.error) {
-      setNotification({ errors: [res.error] })
-    } else {
-      setNotification({ responses: [`A blog with a title ${newBlog.title} was created`] })
+    const res = await createBlog(newBlog)
+    if (res) {
       setTitle('')
       setAuthor('')
       setUrl('')
       toggleVisibility()
-      const blogs = await blogService.getAll()
-      setBlogs(blogs)
     }
   }
 
@@ -54,6 +47,7 @@ const BlogForm = ({
           <div>
             title:
             <input
+              id='title'
               type="text"
               name="title"
               value={title}
@@ -63,6 +57,7 @@ const BlogForm = ({
           <div>
             author:
             <input
+              id='author'
               type="text"
               name="author"
               value={author}
@@ -72,6 +67,7 @@ const BlogForm = ({
           <div>
             url:
             <input
+              id='url'
               type="text"
               name="url"
               value={url}
@@ -94,8 +90,8 @@ const BlogForm = ({
 
 BlogForm.propTypes  = {
   user: PropTypes.object,
-  setNotification: PropTypes.func.isRequired,
-  setBlogs: PropTypes.func.isRequired,
+  setNotification: PropTypes.func,
+  setBlogs: PropTypes.func,
   toggleVisibility: PropTypes.func
 }
 

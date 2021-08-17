@@ -21,6 +21,18 @@ const App = () => {
     )
   }, [])
 
+  const createBlog = async(newBlog) => {
+    const res = await blogService.create(newBlog, user.token)
+    if (res.error) {
+      setNotification({ errors: [res.error] })
+      return false
+    } else {
+      setNotification({ responses: [`A blog with a title ${newBlog.title} was created`] })
+      setBlogs(blogs.concat(res))
+      return true
+    }
+  }
+
   return (
     <div>
       <Header />
@@ -43,6 +55,7 @@ const App = () => {
           user={user}
           setNotification={setNotification}
           setBlogs={setBlogs}
+          createBlog={createBlog}
         />
       </Togglable>
       <BlogList

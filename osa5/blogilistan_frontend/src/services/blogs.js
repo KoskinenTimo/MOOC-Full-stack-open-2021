@@ -19,12 +19,11 @@ const create = (newBlog, userToken) => {
     .catch(err => err.response.data)
 }
 
-const update = (id, updateDetails, userToken) => {
+const update = (id, updateDetails) => {
   const config = {
     url: `${baseUrl}/${id}`,
     method: 'put',
-    data: updateDetails,
-    headers: { Authorization: `Bearer ${userToken}` }
+    data: updateDetails
   }
   return axios(config)
     .then(res => res.data)

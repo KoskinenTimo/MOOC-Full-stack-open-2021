@@ -1,24 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
 
 const Blog = ({
   blog,
-  toggleVisibility,
   user,
   setBlogs,
-  setNotification
+  setNotification,
+  handleLikeButton
 }) => {
 
-  const handleLikeButton = async() => {
-    const updatedLikes = {
-      likes: blog.likes + 1
-    }
-    await blogService.update(blog.id, updatedLikes, user.token)
-    const blogs = await blogService.getAll()
-    setBlogs(blogs)
-  }
+  const [visible, setVisible] = useState(false)
 
   const handleRemoveButton = async() => {
     if (window.confirm(`Remove blog ${blog.title}`)) {
@@ -31,8 +24,6 @@ const Blog = ({
         setBlogs(blogs)
       }
     }
-
-
   }
 
   const renderRemoveButton = () => {
@@ -42,26 +33,37 @@ const Blog = ({
       return <button onClick={handleRemoveButton}>Remove</button>
     }
   }
-  return (
-    <div>
-      <p>
-        {blog.title} {blog.author + ' '}
-        <button onClick={toggleVisibility}>Hide</button>
-      </p>
-      <p>{blog.url}</p>
-      <p>Likes: {blog.likes} <button onClick={handleLikeButton}>Like</button></p>
-      <p>{blog.user.name}</p>
-      {renderRemoveButton()}
-    </div>
-  )
+
+  if (!visible) {
+    return (
+      <div>
+        <p>
+          {blog.title} {blog.author + ' '}
+          <button onClick={() => setVisible(true)}>Show</button>
+        </p>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <p>
+          {blog.title} {blog.author + ' '}
+          <button onClick={() => setVisible(false)}>Hide</button>
+        </p>
+        <p>{blog.url}</p>
+        <p>Likes: {blog.likes} <button onClick={() => handleLikeButton(blog)}>Like</button></p>
+        <p>{blog.user.name}</p>
+        {renderRemoveButton()}
+      </div>
+    )
+  }
 }
 
 Blog.propTypes  = {
   blog: PropTypes.object.isRequired,
-  toggleVisibility: PropTypes.func,
   user: PropTypes.object,
-  setBlogs: PropTypes.func.isRequired,
-  setNotification: PropTypes.func.isRequired
+  setBlogs: PropTypes.func,
+  setNotification: PropTypes.func
 }
 
 export default Blog
