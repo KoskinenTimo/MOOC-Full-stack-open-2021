@@ -56,6 +56,7 @@ const LoginForm = ({
         <form onSubmit={handleLogin}>
           <div>Username:
             <input
+              id="usernameInput"
               type="text"
               name="username"
               value={username}
@@ -65,15 +66,16 @@ const LoginForm = ({
           <div>
             Password:
             <input
+              id="passwordInput"
               type="password"
               name="password"
               value={password}
               onChange={handlePasswordInput}
             />
           </div>
-          <button type="submit">Log In</button>
+          <button type="submit" id="login-button">Log In</button>
         </form>
-        <button onClick={toggleVisibility}>Cancel</button>
+        <button onClick={toggleVisibility} className="cancel-button">Cancel</button>
       </>
     )
   }

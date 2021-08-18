@@ -43,7 +43,7 @@ const BlogForm = ({
   if (user) {
     return (
       <>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="blog-form">
           <div>
             title:
             <input

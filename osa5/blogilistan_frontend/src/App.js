@@ -42,7 +42,7 @@ const App = () => {
       />
       <Togglable
         label={'Log In'}
-        visible={user ? true : false}
+        visible={true}
       >
         <LoginForm
           user={user}

@@ -17,6 +17,10 @@ app.use(middleware.requestLogger);
 app.use('/api/blogs', blogsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/login', loginRoutes);
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
+}
 app.use(middleware.routeNotFound);
 app.use(middleware.errorHandler);
 

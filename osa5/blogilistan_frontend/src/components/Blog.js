@@ -30,14 +30,14 @@ const Blog = ({
     if (blog.user.username
       && user
       && blog.user.username === user.username) {
-      return <button onClick={handleRemoveButton}>Remove</button>
+      return <button onClick={handleRemoveButton} className="remove-blog-button">Remove</button>
     }
   }
 
   if (!visible) {
     return (
       <div>
-        <p>
+        <p className='listTitle'>
           {blog.title} {blog.author + ' '}
           <button onClick={() => setVisible(true)}>Show</button>
         </p>
@@ -46,7 +46,7 @@ const Blog = ({
   } else {
     return (
       <div>
-        <p>
+        <p className='listTitle'>
           {blog.title} {blog.author + ' '}
           <button onClick={() => setVisible(false)}>Hide</button>
         </p>
