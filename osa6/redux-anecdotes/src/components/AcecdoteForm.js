@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
-import { setText, resetText } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 
 const AnecdoteForm = () => {
@@ -9,15 +9,10 @@ const AnecdoteForm = () => {
 
   const addNewAnecdote = (e) => {    
     e.preventDefault()
-    const anecdote = {
-      content: e.target.querySelector("input[name='anecdote']").value
-    }
+    const anecdote = e.target.querySelector("input[name='anecdote']").value
     dispatch(addAnecdote(anecdote))
     e.target.querySelector("input[name='anecdote']").value = ''
-    dispatch(setText(`A new anecdote '${anecdote.content}' was created!`))
-    setTimeout(() => {
-      dispatch(resetText())
-    }, 2000)
+    dispatch(setNotification(`A new anecdote '${anecdote.content}' was created!`,4))
   }
 
   return(

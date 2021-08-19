@@ -3,7 +3,7 @@ import React from 'react'
 
 const Anecdote = ({
   anecdote,
-  vote
+  voteHandler
 }) => {
   return(
     <div key={anecdote.id}>
@@ -12,7 +12,7 @@ const Anecdote = ({
       </div>
       <div>
         has {anecdote.votes}
-        <button onClick={() => vote(anecdote)}>vote</button>
+        <button onClick={() => voteHandler(anecdote)}>vote</button>
       </div>
     </div>
   )
