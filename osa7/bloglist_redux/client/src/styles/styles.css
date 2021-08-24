@@ -1,0 +1,184 @@
+* {
+  box-sizing: border-box;
+}
+
+
+.wrap {
+  max-width: 70%;
+  margin: 0 auto;
+}
+
+header {
+  margin: 0 0 2em 0;
+  overflow: auto;
+  background-color: rgb(221, 220, 220);
+}
+
+header li {
+  display: inline-block;
+  padding: 1em 0 1em 1em;
+}
+
+header a {
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
+header a:hover {
+  color: rgb(182, 182, 182);
+}
+
+nav {
+  margin: 0 0 2em 0
+}
+.header--flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+a:visited {
+  color: black;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.6em;
+  margin: 0 0 0.5em 0
+}
+
+h3 {
+  font-size: 1.2em;
+  margin: 1em 0 0.5em 0;
+}
+
+tr {
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+}
+
+table {
+  font-size: 1.2em;
+}
+
+a {
+  color: black;
+}
+
+.error {
+  border: 2px solid red;
+  color: red;
+  padding: 1em;
+}
+
+.response {
+  border: 2px solid green;
+  color: green;
+  padding: 1em;
+}
+
+.form--centered {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form--centered h1 {
+  padding: 10px 10px 10px 0;
+  margin: 0;
+} 
+
+.user--bloglist li {
+  list-style: none;
+  margin-top: 0.6em;
+}
+
+.user--bloglist a {
+  text-decoration: none;
+}
+
+.user--bloglist a:hover {
+  color: rgb(182, 182, 182);
+}
+
+label {
+  font-size: 1.2em;
+  display: block;
+  padding: 0.8em 10px 0.8em 0;
+}
+
+input {
+  font-size: 1em;
+  width: 100%;
+  display: block;
+  padding: 1em 1em;
+}
+
+
+button {
+  padding: 0.3em;
+  margin: 5px 5px 5px 0;
+  font-size: 1.2em;
+}
+
+.blogbox {
+  padding: 1em;
+  border: 2px solid black;
+  margin-top: 5px;
+}
+
+.blogbox a {
+  text-decoration: none;
+  font-size: 1.1em;
+}
+
+.blogbox h1,
+.blogbox p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.comments--flex {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.comments--flex form,
+.comments--flex ul {
+  padding: 1em;
+  width: 300px;
+}
+
+.comments--flex ul {
+  margin: 0;
+}
+
+.blog-list .blogbox:hover {
+  background-color: rgb(233, 233, 233);
+}
+
+.listTitle {
+  font-size: 18px;
+}
+
+.nav-link {
+  padding: 5px 10px 5px 0;
+  font-size: 1.2em;
+}
+
+.nav-link:hover {
+  color: rgb(75, 75, 75);
+  font-size: 1.3em;
+}
+
+.nav-bar {
+  margin-bottom: 10px;
+}
+
+.user-list {
+  text-align: left;
+  padding: 5px 10px 5px 0;
+}

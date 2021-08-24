@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
+const User = require('../models/user');
 const { asyncHandler, userExtractor } = require('../utils/middleware');
 const { createError } = require('../utils/createError');
 
@@ -23,6 +24,9 @@ blogsRouter.get('/', asyncHandler(async (req,res,next) => {
 blogsRouter.post('/', userExtractor, asyncHandler(async (req,res,next) => {
   const { body, currentUser} = req;  
   const blog = new Blog({ ...body, user: currentUser.id }); 
+  const userBlogs = await User.findById(blog.user).then(user => user.blogs)
+  userBlogs.push(blog.id)
+  await User.findByIdAndUpdate(blog.user, { blogs:userBlogs }, { new:true })
   const postedBlog = await blog
     .save()
     .then(blog => 
@@ -57,9 +61,15 @@ blogsRouter.delete('/:id', userExtractor, asyncHandler(async (req,res,next) => {
   const id = req.params.id;
   const { currentUser } = req;
   const blog = await Blog.findById(id);
-
+  
   if (blog.user.toString() == currentUser.id) {
     const response = await Blog.findByIdAndRemove(id);
+    const userBlogs = await User.findById(blog.user).then(user => user.blogs)
+    const index = userBlogs.indexOf(blog.id)
+    if (index > -1) {
+      userBlogs.splice(index,1)
+    }    
+    const user = await User.findByIdAndUpdate(blog.user, { blogs:userBlogs }, { new:true })
     if (response) {
       res.status(204).end();
     } else {
@@ -80,6 +90,20 @@ blogsRouter.put('/:id', asyncHandler (async (req,res,next) => {
     .populate('user', { username: 1, name: 1 });
   if (response) {
     res.json(response);
+  } else {
+    next(createError(404,`Blog with id ${id} not found.`));
+  }
+}));
+
+blogsRouter.post('/:id/comments', asyncHandler (async (req,res,next) => {
+  const { body } = req
+  const { id } = req.params
+  const blog = await Blog.findById(id)
+  if (blog) {
+    const updatedComments = blog.comments.concat(body.comment);
+    const updatedBlog = await Blog.findByIdAndUpdate(id, { comments: updatedComments }, { new:true, runValidators:true })
+      .populate('user', { username: 1, name: 1 });
+    res.json(updatedBlog)
   } else {
     next(createError(404,`Blog with id ${id} not found.`));
   }

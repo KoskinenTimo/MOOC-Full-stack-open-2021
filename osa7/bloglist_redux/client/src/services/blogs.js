@@ -1,0 +1,61 @@
+import axios from 'axios'
+const baseUrl = '/api/blogs'
+
+
+const getAll = () => {
+  return axios(baseUrl)
+    .then(response => response.data)
+}
+
+const create = (newBlog, userToken) => {
+  const config = {
+    url: baseUrl,
+    method: 'post',
+    data: newBlog,
+    headers: { Authorization: `Bearer ${userToken}` }
+  }
+  return axios(config)
+    .then(res => res.data)
+    .catch(err => err.response.data)
+}
+
+const update = (id, updateDetails) => {
+  const config = {
+    url: `${baseUrl}/${id}`,
+    method: 'put',
+    data: updateDetails
+  }
+  return axios(config)
+    .then(res => res.data)
+    .catch(err => err.response.data)
+}
+
+const remove = (id, userToken) => {
+  const config = {
+    url: `${baseUrl}/${id}`,
+    method: 'delete',
+    headers: { Authorization: `Bearer ${userToken}` }
+  }
+  return axios(config)
+    .then(res => res.data)
+    .catch(err => err.response.data)
+}
+
+const createComment = (id,comment) => {
+  const config = {
+    url: `${baseUrl}/${id}/comments`,
+    method: 'post',
+    data: { comment }
+  }
+  return axios(config)
+    .then(res => res.data)
+    .catch(err => err.response.data)
+}
+
+export default {
+  getAll,
+  create,
+  update,
+  remove,
+  createComment
+}

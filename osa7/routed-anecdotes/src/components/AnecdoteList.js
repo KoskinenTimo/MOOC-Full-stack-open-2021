@@ -4,7 +4,6 @@ import {
 } from "react-router-dom"
 
 const AnecdoteList = ({ anecdotes }) => {
-  console.log(anecdotes);
   return(
     <div>
       <h2>Anecdotes</h2>

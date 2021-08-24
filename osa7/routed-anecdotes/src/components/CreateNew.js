@@ -3,6 +3,8 @@ import {
   useHistory,
 } from "react-router-dom"
 import useField from '../hooks'
+import { useDispatch } from 'react-redux'
+import { displayNotification } from './reducers/notificationReducer'
 
 
 const CreateNew = (props) => {
@@ -11,6 +13,7 @@ const CreateNew = (props) => {
   const info = useField('text')
   const noReset = ({ reset, ...rest }) => rest
   const history = useHistory()
+  const dispatch = useDispatch()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -20,11 +23,8 @@ const CreateNew = (props) => {
       info: info.value,
       votes: 0
     })
-    props.setNotification(`a new anecdote '${content.value}' created!`)
+    dispatch(displayNotification(`a new anecdote '${content.value}' created`,10))
     history.push('/anecdotes')
-    setTimeout(() => {
-      props.setNotification(null)
-    },10000)
   }
 
   const resetFields = () => {

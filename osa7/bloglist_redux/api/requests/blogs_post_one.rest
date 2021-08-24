@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hdHRpbWVpa2EiLCJpZCI6IjYxMWM1NDIxMjdmYWM5MmVhMDI4NDNiZSIsImlhdCI6MTYyOTgxMDE5NiwiZXhwIjoxNjI5ODEzNzk2fQ.Dk6wSKXUSsiZxYyHP9AT8PPFablu382r4IqDPfeLIaw
+
+{
+    "title": "Awsome Blog 2",
+    "author": "Matti Meikäläinen",
+    "url": "www.blog2.com",
+    "likes": 7
+}
