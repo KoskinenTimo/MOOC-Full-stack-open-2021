@@ -1,0 +1,18 @@
+{
+  "name": "books_and_authors",
+  "version": "1.0.0",
+  "description": "books and authors backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Timo Koskinen",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.2.0",
+    "graphql": "^15.5.1",
+    "uuid": "^8.3.2"
+  }
+}
