@@ -1,0 +1,160 @@
+header {
+  background-color: grey;
+  margin-bottom: 0px;
+}
+
+h1 {
+  margin: 0 20px 20px 20px;
+  font-size: 2em;
+  padding: 20px;
+  color: white;
+}
+
+h2 {
+  margin: 20px;
+  font-size: 2em;  
+}
+
+label {
+  background-color: rgb(160, 160, 160);
+  color: white;
+}
+
+th,th,tr,td {
+  padding: 1em;
+  text-align: left;
+  margin: 1px
+}
+
+.wrap {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.header--flex {
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.header--flex a,
+.header--flex p {  
+  font-size: 1.3em;
+  text-decoration: none;
+  color: white;  
+  padding: 20px;
+  margin: 0 20px 20px 20px;
+}
+
+.header--flex button {
+  border: 1px solid white;
+  color: white;
+  background-color: grey;
+  font-size: 1em;
+  margin-left: 20px;
+}
+
+.header--flex button:hover {
+  color: antiquewhite;
+  border: 3px solid antiquewhite;
+}
+
+.header--flex a:hover {
+  color: antiquewhite;
+  font-size: 1.4em;
+}
+
+.header--nav {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding-top: 1em;
+  overflow-y: hidden;
+}
+
+.header--nav a {
+  text-decoration: none;
+  font-size: 1.3em;
+  background-color: white;
+  color: grey;
+  padding: 10px;
+  margin: 0 10px;
+}
+
+.header--nav a:hover {
+  background-color: rgb(190, 190, 190);
+  color: white;
+}
+
+.notification {
+  font-size: 20px;
+  height: 35px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.notification--error {
+  color: #F07660;
+  border: 2px solid #F07660;   
+}
+
+.notification--normal {
+  color: #39BD3B;
+  border: 2px solid #39BD3B;   
+}
+
+.notification p {
+  margin: 0;
+  padding: 5px;
+}
+
+.card {
+  margin: 20px auto;
+  max-width: 600px;
+  border-left: 2px solid grey;
+  border-right: 2px solid grey;
+}
+
+.card h2 {
+  text-align: center;
+}
+
+.card table {
+  margin: auto;
+}
+
+.card form {
+  text-align: center;
+  align-items: center;
+}
+
+.card select {  
+  display: block;
+  margin: 0 auto;
+  padding: 5px;
+  font-size: 15px;
+}
+
+.card form select,
+.card form label,
+.card form input,
+.card form button {
+  width: 300px;
+  display: block;
+  text-align: left;
+  margin: 4px auto;
+  padding: 11px;
+  box-sizing: border-box;
+  font-size: 17px;
+}
+
+.card form button {
+  background-color: rgb(128, 128, 128);
+  color: white;
+  border: none;
+}
+
+.card form button:hover {
+  background-color: rgb(173, 173, 173);
+  border: 1px solid black;
+}

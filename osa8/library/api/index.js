@@ -92,13 +92,20 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
       genres: ['classic', 'revolution']
     },
   ]
+  const user = {
+    username: 'mattimeika',
+    favoriteGenre: 'classic'
+  }
 
   console.log("Resetting DB");
   await Book.deleteMany({})
   await Author.deleteMany({})
+  await User.deleteMany({})
   console.log("Inserting hardcoded data into DB");
   await Book.insertMany(books)
   await Author.insertMany(authors)
+  const newUser = new User(user)
+  await newUser.save()
 })()
 
 
@@ -190,7 +197,15 @@ const resolvers = {
           .populate('author', { name: 1, born : 1 })
       }
     },    
-    allAuthors: async() => await Author.find({}),
+    allAuthors: async() => {
+      const authors = await Author.find({})
+      const books = await Book.find({})
+      const authorsWithBookCount =  authors.map(a => {
+        a.bookCount = books.filter(b => a.id == b.author).length
+        return a
+      })
+      return authorsWithBookCount
+    },
     me: (root,args,{ currentUser }) => currentUser
   },
 
@@ -229,7 +244,7 @@ const resolvers = {
           { name:args.name },
           { born: args.setBornTo },
           { new:true, runValidators:true })
-      return updatedAuthor
+        return updatedAuthor
       } catch (err) {
         throw new UserInputError(err.message, {
           invalidArgs: args
