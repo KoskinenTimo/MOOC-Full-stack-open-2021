@@ -1,18 +1,16 @@
 import { useLazyQuery, useQuery } from '@apollo/client'
 import React, { useEffect, useState } from 'react'
 import {
-  ALL_BOOKS,
   ALL_GENRES,
   GENRE_BOOKS
 } from '../queries'
 
 
-const Books = () => {
-  const [ genre, setGenre ] = useState("All genres")
+const Books = ({ booksResult }) => {
+  const [ genre, setGenre ] = useState('')
   const [ books, setBooks ] = useState([])
   const [ genres, setGenres ] = useState([])
-
-  const booksResult = useQuery(ALL_BOOKS)
+  
   const genresResult = useQuery(ALL_GENRES)
   const [ getBooks, filteredBooksResult ] = useLazyQuery(GENRE_BOOKS, {
     variables: {
@@ -22,8 +20,12 @@ const Books = () => {
   })
 
   useEffect(() => {
-    if (booksResult.data) {
-      setBooks(booksResult.data.allBooks)
+    setGenre('All genres')
+  }, [])
+
+  useEffect(() => {
+    if (booksResult) {
+      setBooks(booksResult)
     }
   }, [booksResult])
 
@@ -42,12 +44,14 @@ const Books = () => {
   }, [genresResult])
 
   useEffect(() => {
+    console.log(genre)
     if (genre==="All genres") {
       getBooks({ variables: { genre:null } })
     } else {
       getBooks({ variables: { genre:genre } })
     }
-  }, [genre, getBooks])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [genre])
 
   useEffect(() => {
     if (filteredBooksResult.data) {

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import {
-  ADD_BOOK
+  ADD_BOOK, ALL_BOOKS
 } from '../queries'
 import { Redirect } from 'react-router-dom'
 
 
 const NewBook = ({
   setNotification,
-  user
+  user,
+  updateCacheWith
 }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -24,7 +25,10 @@ const NewBook = ({
       published,
       genres
     },
-    onError: (err) => console.log(err)
+    onError: (err) => console.log(err),
+    update: (store, response) => {
+      updateCacheWith(response.data.addBook)
+    },
   })
 
   useEffect(() => {
