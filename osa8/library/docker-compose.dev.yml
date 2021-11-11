@@ -1,0 +1,29 @@
+services:
+  api:
+    image: library-back-dev
+    build:
+      context: ./api
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./api/:/usr/src/app/
+    expose:
+      - '4000'
+    ports:
+      - '4000:4000'
+    command: npm run dev
+    container_name: library-back-dev
+  client:
+    image: library-front-dev
+    build:
+      context: ./client
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./client/:/usr/src/app/
+    expose:
+      - '3000'        
+    ports:
+      - '3000:3000'
+    command: npm start
+  debug-helper:
+    image: busybox
+  

@@ -1,0 +1,24 @@
+services:
+  api:
+    image: library-back-dev
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api/:/usr/src/app/
+    expose:
+      - '4000'
+    ports:
+      - '4000:4000'
+    command: npm start
+    container_name: library-back
+  client:
+    image: library-front
+    build:
+      context: ./client 
+      dockerfile: Dockerfile
+    ports:
+      - '8080:80'
+    container_name: library-front
+  debug-helper:
+    image: busybox

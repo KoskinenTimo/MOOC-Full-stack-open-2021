@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from '@apollo/client'
 import {
-  ADD_BOOK, ALL_BOOKS
+  ADD_BOOK
 } from '../queries'
 import { Redirect } from 'react-router-dom'
 
