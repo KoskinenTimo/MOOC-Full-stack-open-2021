@@ -1,0 +1,28 @@
+services: 
+  api:
+    image: patientor-back-dev
+    build:
+      context: ./api
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./api/src:/home/node/app/src
+      - ./api/nodemon.json:/home/node/app/nodemon.json    
+    expose:
+      - '3001'
+    ports:
+      - '3001:3001'
+    command: npm run dev
+    container_name: patientor-back-dev
+  client:
+    image: patientor-front-dev
+    build:
+      context: ./client
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./client/src:/home/node/app/src
+    expose:
+      - '3000'
+    ports:
+      - '3000:3000'
+    command: npm start
+    container_name: patientor-front-dev

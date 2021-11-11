@@ -13,10 +13,10 @@ app.use(cors(options));
 app.use(express.json());
 
 app.get('/api/ping', (_req, res) => {
-  console.log("Someone pinged!");
-  
-  res.send('pong');
+  console.log("Someone pinged!");  
+  res.send('poooiiiiiioong');
 });
+
 
 app.get('/', (_req, res) => {
   console.log("Someone pinged!");
