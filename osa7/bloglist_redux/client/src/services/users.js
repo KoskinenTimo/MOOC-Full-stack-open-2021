@@ -1,5 +1,7 @@
+/* eslint-disable no-undef */
 import axios from 'axios'
-const baseUrl = '/api/users'
+const localhost = process.env.REACT_APP_API_URL // 'http://localhost:3003'
+const baseUrl = `${localhost}/api/users`
 
 const getAll = () => {
   return axios(baseUrl)
